@@ -1,54 +1,83 @@
-module Main exposing (Model, Msg(..), initailModel, main, update, view)
+module Main exposing (main)
 
 import Browser
-import Html exposing (Html, button, div, text)
-import Html.Events exposing (onClick)
-import Html.Attributes exposing (style)
-
+import Browser.Navigation as Nav
+import Html exposing (..)
+import Html.Attributes exposing (href)
+import Url exposing (Url)
+import Route exposing (Route(..))
 
 type alias Model =
-    { count : Int }
+     {
+        key : Nav.Key
+       ,route : Route
+     }
 
+init : () -> Url -> Nav.Key -> (Model , Cmd Msg)
+init _ url key =
+    ( { key = key, route = Route.parseUrl url }, Cmd.none)
 
-initailModel : Model
-initailModel =
-    { count = 0 }
+type Msg 
+    = LinkClicked Browser.UrlRequest
+    | UrlChanged Url
 
-
-type Msg
-    = Increment
-    | Decrement
-    | Reset
-
-
-update : Msg -> Model -> Model
+update : Msg -> Model -> (Model , Cmd Msg)
 update msg model =
     case msg of
-        Increment ->
-            { model | count = model.count + 1 }
+        LinkClicked urlRequest ->
+           case urlRequest of
+                Browser.Internal url ->
+                  (model, Nav.pushUrl model.key (Url.toString url))
 
-        Decrement ->
-            { model | count = model.count - 1 }
+                Browser.External href ->
+                  (model, Nav.load href)
 
-        Reset ->
-            { model | count = 0 }
+        UrlChanged url ->
+           ({model| route = Route.parseUrl url}, Cmd.none) 
 
+view : Model -> Browser.Document Msg
+view model=
+    { title = "1000ldk Blog"
+    , body =
+        [ case model.route of
+            Home ->
+               viewHome
+            
+            Post id ->
+            
+               viewPost id
+               
+            NotFound ->
+               text "ページが見つかりません"
+               
+        ]
+    }
 
-view : Model -> Html Msg
-view model =
-    div []
-        [ 
-          div [style "text-align" "center"] [text "任意の文字列"]
-        , button [ onClick Decrement ] [ text "-" ]
-        , div [] [ text (String.fromInt model.count) ]
-        , button [ onClick Increment ] [ text "+" ]
+viewHome : Html Msg
+viewHome = 
+    div[]
+       [ h1 [] [ text "記事一覧"]
+       , ul []
+           [ li [] [a[href "/post/1"][ text "最初の記事"]]
+           , li [] [a[href "/post/2"][ text "2番目の記事"]]
+           ]
         ]
 
+viewPost : Int -> Html Msg
+viewPost id =
+    div []
+        [ a[href "/"][ text "←　一覧に戻る"]
+        , h1 [] [text ("記事"++ String.fromInt id)]
+        , p[] [ text "ここに本文が入ります"]
+        ]
 
 main : Program () Model Msg
-main =
-    Browser.sandbox
-        { init = initailModel
-        , view = view
-        , update = update
-        }
+main = 
+    Browser.application 
+       { init = init
+       , view = view
+       , update = update
+       , subscriptions =\_ -> Sub.none
+       , onUrlChange = UrlChanged
+       , onUrlRequest = LinkClicked
+       }
