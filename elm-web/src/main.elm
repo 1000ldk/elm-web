@@ -56,7 +56,7 @@ view model=
                Html.map GotHomeMsg Home.home
             
             Post id ->
-               Html.map GotPostMsg (Post.viewPost id)
+               Html.map GotPostMsg (Post.viewPost model.route id)
                
             NotFound ->
                text "ページが見つかりません"

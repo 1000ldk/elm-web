@@ -6,6 +6,7 @@ import Url.Parser as Parser exposing (Parser, (</>), int, map, oneOf, s, top, pa
 type Route
     = Home
     | Post Int
+    | ElmBlog
     | NotFound
 
 routeParser : Parser (Route -> a)a
