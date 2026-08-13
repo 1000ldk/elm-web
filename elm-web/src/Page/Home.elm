@@ -29,6 +29,7 @@ home =
        , ul []
            [ li [] [a[href "/post/1"][ text "最初の記事"]]
            , li [] [a[href "/post/2"][ text "2番目の記事"]]
+           , li [] [a[href "/post/2"][ text "3番目の記事"]]
            ]
         ]
 
