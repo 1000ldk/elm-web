@@ -15,7 +15,7 @@ viewPost id =
         , div []
               [ case id of
                   1 ->
-                    Html.map GotElmBlogMsg ElmBlog.view.content
+                    Html.map GotElmBlogMsg ElmBlog.view
 
                   _ ->
                     text "記事が見つかりません"
