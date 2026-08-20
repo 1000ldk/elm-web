@@ -23,8 +23,10 @@ init : () -> Url -> Nav.Key -> (Model , Cmd Msg)
 init _ url key =
     ( { key = key, route = Route.parseUrl url }, Cmd.none)
 
-me : Html Msg
-me = div[]
+me : Model -> Html Msg
+me model= div[]
         [
-            text "こんには"
+             a [ href "/" ] [ text "←　一覧に戻る" ]
+            ,div[style "text-align" "center"][text "こんには"]
+            ,div[style "text-align" "center"][text ""]
         ]

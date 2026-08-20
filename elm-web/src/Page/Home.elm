@@ -31,7 +31,7 @@ home model =
         , div [ class "content" ]
 
        [ h1 [style "text-align" "center"] [ text "1000LDK Blog"]
-       , ul []
+       , ul [style "text-align" "center"]
            [ li [] [a[href "/post/1"][ text "最初の記事"]]
            , li [] [a[href "/post/2"][ text "2番目の記事"]]
            , li [] [a[href "/post/3"][ text "3番目の記事"]]
@@ -42,7 +42,7 @@ home model =
 viewSidebar : Model -> Html Msg
 viewSidebar model=
     nav [ class "sidebar"] 
-        [a[href "/"][text "About"]
+        [a[href "/about"][text "About"]
         ]
                
 

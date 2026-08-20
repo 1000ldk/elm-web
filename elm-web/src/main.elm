@@ -70,7 +70,7 @@ view model=
                Html.map GotPostMsg (Post.viewPost id)
 
             About ->
-               Html.map GotAboutMsg (About.me)   
+               Html.map GotAboutMsg (About.me model)   
 
             NotFound ->
                text "ページが見つかりません"
