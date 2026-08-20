@@ -8,6 +8,12 @@ import Url exposing (Url)
 import Route exposing (Route(..))
 import Page.Home as Home
 import Page.Post as Post
+import Page.About as About
+import Element exposing(Element)
+import Element.Background as Background
+import Element.Font as Font
+import Element.Border as Border
+
 
 type alias Model =
      {
@@ -24,6 +30,8 @@ type Msg
     | UrlChanged Url
     | GotHomeMsg Home.Msg
     | GotPostMsg Post.Msg
+    | GotAboutMsg About.Msg
+
 
 update : Msg -> Model -> (Model , Cmd Msg)
 update msg model =
@@ -43,7 +51,10 @@ update msg model =
            (model, Cmd.none)
 
         GotPostMsg _->
-           (model, Cmd.none)      
+           (model, Cmd.none)
+
+        GotAboutMsg _->
+           (model, Cmd.none)    
 
 
 
@@ -53,11 +64,14 @@ view model=
     , body =
         [ case model.route of
             Home ->
-               Html.map GotHomeMsg Home.home
+               Html.map GotHomeMsg (Home.home model)
             
             Post id ->
                Html.map GotPostMsg (Post.viewPost id)
-               
+
+            About ->
+               Html.map GotAboutMsg (About.me)   
+
             NotFound ->
                text "ページが見つかりません"
                

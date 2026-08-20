@@ -1,0 +1,30 @@
+module Page.About exposing(me,Model, Msg, init)
+
+import Browser
+import Html exposing (..)
+import Html.Attributes exposing (href,class,style)
+import Url exposing (Url)
+import Browser.Navigation as Nav
+import Route exposing (Route(..))
+
+
+
+type alias Model =
+     {
+        key : Nav.Key
+        ,route : Route
+     }
+
+type Msg 
+    = LinkClicked Browser.UrlRequest
+    | UrlChanged Url
+
+init : () -> Url -> Nav.Key -> (Model , Cmd Msg)
+init _ url key =
+    ( { key = key, route = Route.parseUrl url }, Cmd.none)
+
+me : Html Msg
+me = div[]
+        [
+            text "こんには"
+        ]
