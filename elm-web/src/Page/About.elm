@@ -22,11 +22,38 @@ type Msg
 init : () -> Url -> Nav.Key -> (Model , Cmd Msg)
 init _ url key =
     ( { key = key, route = Route.parseUrl url }, Cmd.none)
+type alias LinkItem =
+    {
+        label : String 
+       ,url : String
+    }
+
+links : List LinkItem
+links =
+    [
+        {label = "GitHub", url ="https://github.com/1000ldk"}
+       ,{label = "Twitter", url = "https://twitter.com/0zldk" } 
+    ]    
 
 me : Model -> Html Msg
 me model= div[]
         [
              a [ href "/" ] [ text "←　一覧に戻る" ]
-            ,div[style "text-align" "center"][text "こんには"]
-            ,div[style "text-align" "center"][text ""]
+            ,h1[style "text-align" "center" ] [text "1000LDK"]
+            ,div[style "text-align" "center"][text "iOSアプリ開発や折り紙、島巡り"]
+            ,div
+            [style "max-width" "240px"
+            , style "margin" "40px auto 0"
+            ]
+            [h2[ style "margin-bottom" "8px" ][text "Links"]
+            ,ul [ style "list-style-position" "inside"
+                , style "padding" "0"
+                , style "margin" "0"
+                 ]
+                 (List.map viewLink links)
+            ]     
         ]
+
+viewLink : LinkItem -> Html Msg
+viewLink item =
+    li [style "margin-bottom" "4px" ] [ a [ href item.url ] [ text item.label ] ]        
