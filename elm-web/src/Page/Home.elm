@@ -26,23 +26,29 @@ init _ url key =
 
 home : Model -> Html Msg
 home model = 
-    div[class "layout" ]
-        [ viewSidebar model
-        , div [ class "content" ]
-
-       [ h1 [style "text-align" "center"] [ text "1000LDK Blog"]
-       , ul [style "text-align" "center"]
-           [ li [] [a[href "/post/1"][ text "最初の記事"]]
-           , li [] [a[href "/post/2"][ text "2番目の記事"]]
-           , li [] [a[href "/post/3"][ text "3番目の記事"]]
+    div[]-- 記事を追加したかったらpostItem
+       [ h1 [class "post-title"] [ text "ブログ一覧"]
+       , ul [ class "post-list" ]
+           [  postItem "/post/1" "このサイトをElmをつかって作成した話" "2026.08.21"
+            , postItem "/post/2" "2番目の記事" " "
+            , postItem "/post/3" "3番目の記事" " "
            ]
         ]
-    ]    
+        
+
+postItem : String -> String -> String -> Html Msg
+postItem url title date =
+    li []
+        [ a [ href url ]
+            [ span [ class "post-item-title" ] [ text title ]
+            , span [ class "post-item-date" ] [ text date ]
+            ]
+        ]
 
 viewSidebar : Model -> Html Msg
 viewSidebar model=
     nav [ class "sidebar"] 
-        [a[href "/about"][text "About"]
+        [a[href "/about"][text ""]
         ]
                
 

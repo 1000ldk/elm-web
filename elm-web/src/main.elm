@@ -13,7 +13,7 @@ import Element exposing(Element)
 import Element.Background as Background
 import Element.Font as Font
 import Element.Border as Border
-
+import Layout
 
 type alias Model =
      {
@@ -62,6 +62,7 @@ view : Model -> Browser.Document Msg
 view model=
     { title = "1000ldk Blog"
     , body =
+      [Layout.view
         [ case model.route of
             Home ->
                Html.map GotHomeMsg (Home.home model)
@@ -76,6 +77,7 @@ view model=
                text "ページが見つかりません"
                
         ]
+      ]  
     }
 
 main : Program () Model Msg
