@@ -10,23 +10,20 @@ import Route exposing (Route(..))
 
 
 type alias Model =
-     {
-        key : Nav.Key
-        ,route : Route
-     }
+    {}
+
+init : ( Model, Cmd Msg )
+init =
+    ( {}, Cmd.none )
 
 type Msg 
     = LinkClicked Browser.UrlRequest
     | UrlChanged Url
 
-init : () -> Url -> Nav.Key -> (Model , Cmd Msg)
-init _ url key =
-    ( { key = key, route = Route.parseUrl url }, Cmd.none)
 type alias LinkItem =
-    {
-        label : String 
-       ,url : String
-    }
+    { label : String
+    , url : String
+    }    
 
 links : List LinkItem
 links =
