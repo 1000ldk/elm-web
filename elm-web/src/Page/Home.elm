@@ -6,6 +6,8 @@ import Html.Attributes exposing (href,class,style)
 import Url exposing (Url)
 import Browser.Navigation as Nav
 import Route exposing (Route(..))
+import Data.Articles as Articles
+
 
 
 
@@ -29,19 +31,16 @@ home model =
     div[]-- 記事を追加したかったらpostItem
        [ h1 [class "post-title"] [ text "ブログ一覧"]
        , ul [ class "post-list" ]
-           [  postItem "/post/1" "このサイトをElmで作成した話" "2026.08.21"
-            , postItem "/post/2" "2番目の記事の予定" " "
-            , postItem "/post/3" "3番目の記事の予定" " "
-           ]
+            (List.map postItem Articles.all)
         ]
         
 
-postItem : String -> String -> String -> Html Msg
-postItem url title date =
+postItem : Articles.Article -> Html Msg
+postItem article =
     li []
-        [ a [ href url ]
-            [ span [ class "post-item-title" ] [ text title ]
-            , span [ class "post-item-date" ] [ text date ]
+        [ a [ href ("/post/" ++ String.fromInt article.id) ]
+            [ span [ class "post-item-title" ] [ text article.title ]
+            , span [ class "post-item-date" ] [ text article.date ]
             ]
         ]
 
