@@ -47,4 +47,11 @@ body { margin: 0; }
 .post-item-title { font-weight: 500; font-size: 16px; }
 .post-item-date { font-size: 12px; color: #999; white-space: nowrap; }
 .post-list a:hover .post-item-title { text-decoration: underline; }
+.article-body { font-size: 16px; line-height: 1.8; color: #1a1a1a; }
+.article-body h1 { font-size: 24px; font-weight: 600; margin: 0 0 8px; }
+.article-body h2 { font-size: 19px; font-weight: 600; margin: 32px 0 12px; }
+.article-body p { margin: 0 0 16px; }
+.article-body ul, .article-body ol { margin: 0 0 16px; padding-left: 1.4em; }
+.article-body a { color: #1a1a1a; text-decoration: underline; }
+.article-body code { background: #f4f4f4; padding: 2px 5px; border-radius: 4px; font-size: 14px; }
 """

@@ -1,16 +1,29 @@
-module Article.Articles.R8.ElmBlog exposing(view,Msg)
+module Article.Articles.R8.ElmBlog exposing (view, Msg)
 
-import Html exposing (Html, div, h1, p, img, main_, text)
-import Html.Attributes exposing(..)
+import Html exposing (Html, div)
+import Html.Attributes exposing (class)
+import Markdown
+
 
 type Msg
     = SomeEvent
     | AnotherEvent String
 
-view : Html.Html Msg
+
+content : String
+content =
+    """
+# こんにちは1000ldkです
+
+現状ではmarkdownでのブログ生成方法が分からないため、
+elm直書きの表示にいたします。
+
+
+なんだこれ
+"""
+
+
+view : Html Msg
 view =
-    div[]
-    [
-        h1[][text"こんにちは1000ldkです"]
-        , p[][text" 現状ではmarkdownでのブログ生成方法が分からないためelm直書きの表示にいたします"]
-    ]
+    div [ class "article-body" ]
+        [ Markdown.toHtml [] content ]

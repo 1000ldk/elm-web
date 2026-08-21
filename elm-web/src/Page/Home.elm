@@ -29,9 +29,9 @@ home model =
     div[]-- 記事を追加したかったらpostItem
        [ h1 [class "post-title"] [ text "ブログ一覧"]
        , ul [ class "post-list" ]
-           [  postItem "/post/1" "このサイトをElmをつかって作成した話" "2026.08.21"
-            , postItem "/post/2" "2番目の記事" " "
-            , postItem "/post/3" "3番目の記事" " "
+           [  postItem "/post/1" "このサイトをElmで作成した話" "2026.08.21"
+            , postItem "/post/2" "2番目の記事の予定" " "
+            , postItem "/post/3" "3番目の記事の予定" " "
            ]
         ]
         
