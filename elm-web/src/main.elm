@@ -18,12 +18,15 @@ import Layout
 type alias Model =
      {
         key : Nav.Key
-       ,route : Route
+       ,page : Page
      }
 
-init : () -> Url -> Nav.Key -> (Model , Cmd Msg)
+init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
 init _ url key =
-    ( { key = key, route = Route.parseUrl url }, Cmd.none)
+    let
+        ( page, cmd ) = initPage (Route.parseUrl url) key
+    in
+    ( { key = key, page = page }, cmd )
 
 type Msg 
     = LinkClicked Browser.UrlRequest
@@ -32,52 +35,74 @@ type Msg
     | GotPostMsg Post.Msg
     | GotAboutMsg About.Msg
 
+type Page
+    = HomePage Home.Model
+    | PostPage Post.Model
+    | AboutPage About.Model
+    | NotFoundPage
 
-update : Msg -> Model -> (Model , Cmd Msg)
+initPage : Route -> Nav.Key -> ( Page, Cmd Msg )
+initPage route key =
+    case route of
+        Home ->
+            let
+                ( m, cmd ) = Home.init
+            in
+            ( HomePage m, Cmd.map GotHomeMsg cmd )
+
+        Post id ->
+            let
+                ( m, cmd ) = Post.init id
+            in
+            ( PostPage m, Cmd.map GotPostMsg cmd )
+
+        About ->
+            let
+                ( m, cmd ) = About.init
+            in
+            ( AboutPage m, Cmd.map GotAboutMsg cmd )
+
+        NotFound ->
+            ( NotFoundPage, Cmd.none )  
+
+update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
-    case msg of
-        LinkClicked urlRequest ->
-           case urlRequest of
-                Browser.Internal url ->
-                  (model, Nav.pushUrl model.key (Url.toString url))
+    case ( msg, model.page ) of
+        ( LinkClicked (Browser.Internal url), _ ) ->
+            ( model, Nav.pushUrl model.key (Url.toString url) )
 
-                Browser.External href ->
-                  (model, Nav.load href)
+        ( LinkClicked (Browser.External href), _ ) ->
+            ( model, Nav.load href )
 
-        UrlChanged url ->
-           ({model| route = Route.parseUrl url}, Cmd.none) 
+        ( UrlChanged url, _ ) ->
+            let
+                ( page, cmd ) = initPage (Route.parseUrl url) model.key
+            in
+            ( { model | page = page }, cmd )
 
-        GotHomeMsg _->
-           (model, Cmd.none)
+        ( GotPostMsg subMsg, PostPage subModel ) ->
+            let
+                ( newSubModel, cmd ) = Post.update subMsg subModel
+            in
+            ( { model | page = PostPage newSubModel }, Cmd.map GotPostMsg cmd )
 
-        GotPostMsg _->
-           (model, Cmd.none)
-
-        GotAboutMsg _->
-           (model, Cmd.none)    
+        _ ->
+            ( model, Cmd.none )   
 
 
 
 view : Model -> Browser.Document Msg
-view model=
+view model =
     { title = "1000ldk Blog"
     , body =
-      [Layout.view
-        [ case model.route of
-            Home ->
-               Html.map GotHomeMsg (Home.home model)
-            
-            Post id ->
-               Html.map GotPostMsg (Post.viewPost id)
-
-            About ->
-               Html.map GotAboutMsg (About.me model)   
-
-            NotFound ->
-               text "ページが見つかりません"
-               
+        [ Layout.view
+            [ case model.page of
+                HomePage m -> Html.map GotHomeMsg (Home.home m)
+                PostPage m -> Html.map GotPostMsg (Post.view m)
+                AboutPage m -> Html.map GotAboutMsg (About.me m)
+                NotFoundPage -> text "ページが見つかりません"
+            ]
         ]
-      ]  
     }
 
 main : Program () Model Msg
