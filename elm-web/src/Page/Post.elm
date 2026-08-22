@@ -33,7 +33,7 @@ init id =
 fetchArticle : Int -> Cmd Msg
 fetchArticle id =
     Http.get
-        { url = "/articles/" ++ String.fromInt id ++ ".md"
+        { url = "articles/" ++ String.fromInt id ++ ".md"
         , expect = Http.expectString GotArticle
         }
 
@@ -51,7 +51,7 @@ update msg model =
 view : Model -> Html Msg
 view model =
     div []
-        [ a [ href "/" ] [ text "← 一覧に戻る" ]
+        [ a [ href "./" ] [ text "← 一覧に戻る" ]
         , h1 [] [ text (Articles.findTitle model.id) ]
         , case model.status of
             Loading ->

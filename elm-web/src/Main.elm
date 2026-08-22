@@ -19,14 +19,16 @@ type alias Model =
      {
         key : Nav.Key
        ,page : Page
+       ,basePath : String
      }
 
-init : () -> Url -> Nav.Key -> ( Model, Cmd Msg )
-init _ url key =
+-- フラグには index.html の <base> が示すパス("/" や "/elm-web/")が入る
+init : String -> Url -> Nav.Key -> ( Model, Cmd Msg )
+init basePath url key =
     let
-        ( page, cmd ) = initPage (Route.parseUrl url) key
+        ( page, cmd ) = initPage (Route.parseUrl basePath url) key
     in
-    ( { key = key, page = page }, cmd )
+    ( { key = key, page = page, basePath = basePath }, cmd )
 
 type Msg 
     = LinkClicked Browser.UrlRequest
@@ -76,7 +78,7 @@ update msg model =
 
         ( UrlChanged url, _ ) ->
             let
-                ( page, cmd ) = initPage (Route.parseUrl url) model.key
+                ( page, cmd ) = initPage (Route.parseUrl model.basePath url) model.key
             in
             ( { model | page = page }, cmd )
 
@@ -105,7 +107,7 @@ view model =
         ]
     }
 
-main : Program () Model Msg
+main : Program String Model Msg
 main = 
     Browser.application 
        { init = init

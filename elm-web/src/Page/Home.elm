@@ -30,7 +30,7 @@ home model =
 postItem : Articles.Article -> Html Msg
 postItem article =
     li []
-        [ a [ href ("/post/" ++ String.fromInt article.id) ]
+        [ a [ href ("post/" ++ String.fromInt article.id) ]
             [ span [ class "post-item-title" ] [ text article.title ]
             , span [ class "post-item-date" ] [ text article.date ]
             ]

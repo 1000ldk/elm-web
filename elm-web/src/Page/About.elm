@@ -35,7 +35,7 @@ links =
 me : Model -> Html Msg
 me model= div[]
         [
-             a [ href "/" ] [ text "←　一覧に戻る" ]
+             a [ href "./" ] [ text "←　一覧に戻る" ]
             ,h1[style "text-align" "center" ] [text "1000LDK"]
             ,div[style "text-align" "center"][text "iOSアプリ開発や折り紙、島巡り"]
             ,div[style "text-align" "center"][text "今年中にアウトドア派になります"]

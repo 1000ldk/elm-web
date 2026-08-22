@@ -11,7 +11,7 @@ view content =
             :: header [ class "site-header" ]
                 [ span [ class "site-title" ] [ text "1000LDK Blog" ]
                 , nav [ class "site-nav" ]
-                    [ a [ href "/about" ] [ text "About" ] ]
+                    [ a [ href "about" ] [ text "About" ] ]
                 ]
             :: content
         )

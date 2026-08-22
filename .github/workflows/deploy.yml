@@ -1,0 +1,66 @@
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  # PR ではビルドのみ実行し、デプロイはしない(壊れた状態を公開しないため)
+  pull_request:
+  workflow_dispatch:
+
+# GitHub Pages へのデプロイに必要な権限
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# 同時に走ったデプロイが競合しないようにする(実行中のものは中断しない)
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install Elm
+        run: npm install -g elm@0.19.1-5
+
+      - name: Build
+        working-directory: elm-web
+        run: elm make src/Main.elm --optimize --output=main.js
+
+      - name: Assemble site
+        working-directory: elm-web
+        env:
+          # プロジェクトページは https://<user>.github.io/<repo>/ で配信される
+          BASE_PATH: /${{ github.event.repository.name }}/
+        run: |
+          mkdir -p ../_site
+          cp main.js ../_site/
+          cp -r articles ../_site/
+          sed "s|<base href=\"/\">|<base href=\"${BASE_PATH}\">|" index.html > ../_site/index.html
+          # SPA なので存在しないパスも index.html に流し、Elm 側でルーティングさせる
+          cp ../_site/index.html ../_site/404.html
+          # Jekyll による加工を無効化する
+          touch ../_site/.nojekyll
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: _site
+
+  deploy:
+    needs: build
+    if: github.event_name != 'pull_request'
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4
