@@ -11,8 +11,8 @@ all : List Article
 all =
     [
         {id=1,title ="このサイトをElmで作成した話", date="2026.08.21"}
-       ,{id=2,title ="2番目のサイト", date=""}
-       ,{id=3,title ="3番目のサイト", date=""}
+       -- ,{id=2,title ="TestFlight　内部テスト配信までの作業工程", date="2026.08.21"}
+       -- ,{id=3,title ="3番目のサイト", date=""}
     ]
 
 findTitle :Int -> String
