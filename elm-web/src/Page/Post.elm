@@ -42,7 +42,11 @@ update : Msg -> Model -> ( Model, Cmd Msg )
 update msg model =
     case msg of
         GotArticle (Ok raw) ->
-            ( { model | status = Loaded raw }, Cmd.none )
+            if String.startsWith "<!DOCTYPE" (String.trimLeft raw) then
+                ( { model | status = Failed }, Cmd.none )
+
+            else
+                ( { model | status = Loaded raw }, Cmd.none )
 
         GotArticle (Err _) ->
             ( { model | status = Failed }, Cmd.none )
