@@ -1,0 +1,9 @@
+src/
+elm-stuff/
+node_modules/
+elm.json
+package.json
+package-lock.json
+wrangler.jsonc
+.assetsignore
+README.md

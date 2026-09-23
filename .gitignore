@@ -1,14 +1,10 @@
 elm-stuff/
 
 
-package.json
 
-package-lock.json
 
 node_modules/
 
 main.js
 
-/index.html
-
-elm.js
+elm-web/index.html
