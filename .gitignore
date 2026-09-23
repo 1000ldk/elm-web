@@ -1,6 +1,5 @@
 elm-stuff/
 
-index.html
 
 package.json
 
@@ -10,5 +9,6 @@ node_modules/
 
 main.js
 
-elm.json
+/index.html
 
+elm.js
