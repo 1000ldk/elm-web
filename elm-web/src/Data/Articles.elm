@@ -11,7 +11,7 @@ all : List Article
 all =
     [
         {id=1,title ="このサイトをElmで作成した話", date="2026.08.21"}
-       -- ,{id=2,title ="TestFlight　内部テスト配信までの作業工程", date="2026.08.21"}
+       ,{id=2,title ="[悲劇]Go〇addyでドメイン購入からサイト公開までの苦難", date="2026.09.23"}
        -- ,{id=3,title ="3番目のサイト", date=""}
     ]
 
